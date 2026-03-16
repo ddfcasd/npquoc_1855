@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Mã hóa và Giải mã</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            width: 900px;
+            margin: 20px auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        .box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+        }
+        button {
+            width: auto;
+            cursor: pointer;
+        }
+        .result {
+            background: #f2f2f2;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ứng dụng Mã hóa và Giải mã</h1>
+
+    <div class="box">
+        <h2>Vigenere Cipher</h2>
+        <form action="/vigenere/encrypt" method="post">
+            <input type="text" name="plain_text" placeholder="Nhập văn bản gốc">
+            <input type="text" name="key" placeholder="Nhập khóa">
+            <button type="submit">Mã hóa Vigenere</button>
+        </form>
+
+        <form action="/vigenere/decrypt" method="post">
+            <input type="text" name="cipher_text" placeholder="Nhập văn bản mã hóa">
+            <input type="text" name="key" placeholder="Nhập khóa">
+            <button type="submit">Giải mã Vigenere</button>
+        </form>
+    </div>
+
+    <div class="box">
+        <h2>Rail Fence Cipher</h2>
+        <form action="/railfence/encrypt" method="post">
+            <input type="text" name="plain_text" placeholder="Nhập văn bản gốc">
+            <input type="number" name="key" placeholder="Nhập khóa">
+            <button type="submit">Mã hóa Rail Fence</button>
+        </form>
+
+        <form action="/railfence/decrypt" method="post">
+            <input type="text" name="cipher_text" placeholder="Nhập văn bản mã hóa">
+            <input type="number" name="key" placeholder="Nhập khóa">
+            <button type="submit">Giải mã Rail Fence</button>
+        </form>
+    </div>
+
+    <div class="box">
+        <h2>Playfair Cipher</h2>
+        <form action="/playfair/encrypt" method="post">
+            <input type="text" name="plain_text" placeholder="Nhập văn bản gốc">
+            <input type="text" name="key" placeholder="Nhập khóa">
+            <button type="submit">Mã hóa Playfair</button>
+        </form>
+
+        <form action="/playfair/decrypt" method="post">
+            <input type="text" name="cipher_text" placeholder="Nhập văn bản mã hóa">
+            <input type="text" name="key" placeholder="Nhập khóa">
+            <button type="submit">Giải mã Playfair</button>
+        </form>
+    </div>
+
+    <div class="box">
+        <h2>Transposition Cipher</h2>
+        <form action="/transposition/encrypt" method="post">
+            <input type="text" name="plain_text" placeholder="Nhập văn bản gốc">
+            <input type="number" name="key" placeholder="Nhập khóa">
+            <button type="submit">Mã hóa Transposition</button>
+        </form>
+
+        <form action="/transposition/decrypt" method="post">
+            <input type="text" name="cipher_text" placeholder="Nhập văn bản mã hóa">
+            <input type="number" name="key" placeholder="Nhập khóa">
+            <button type="submit">Giải mã Transposition</button>
+        </form>
+    </div>
+
+    {% if result %}
+    <div class="result">
+        <h3>Kết quả {{ cipher_name }}:</h3>
+        <p>{{ result }}</p>
+    </div>
+    {% endif %}
+</body>
+</html>

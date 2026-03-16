@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request
 from cipher.vigenere import VigenereCipher
 from cipher.railfence import RailFenceCipher
 from cipher.playfair import PlayFairCipher
@@ -11,78 +11,79 @@ railfence_cipher = RailFenceCipher()
 playfair_cipher = PlayFairCipher()
 transposition_cipher = TranspositionCipher()
 
-@app.route('/api/vigenere/encrypt', methods=['POST'])
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+
+# ================= VIGENERE =================
+@app.route('/vigenere/encrypt', methods=['POST'])
 def vigenere_encrypt():
-    data = request.json
-    plain_text = data['plain_text']
-    key = data['key']
-    encrypted_text = vigenere_cipher.vigenere_encrypt(plain_text, key)
-    return jsonify({'encrypted_text': encrypted_text})
+    plain_text = request.form['plain_text']
+    key = request.form['key']
+    result = vigenere_cipher.vigenere_encrypt(plain_text, key)
+    return render_template('index.html', result=result, cipher_name='Vigenere Encrypt')
 
-@app.route('/api/vigenere/decrypt', methods=['POST'])
+
+@app.route('/vigenere/decrypt', methods=['POST'])
 def vigenere_decrypt():
-    data = request.json
-    cipher_text = data['cipher_text']
-    key = data['key']
-    decrypted_text = vigenere_cipher.vigenere_decrypt(cipher_text, key)
-    return jsonify({'decrypted_text': decrypted_text})
+    cipher_text = request.form['cipher_text']
+    key = request.form['key']
+    result = vigenere_cipher.vigenere_decrypt(cipher_text, key)
+    return render_template('index.html', result=result, cipher_name='Vigenere Decrypt')
 
-@app.route('/api/railfence/encrypt', methods=['POST'])
-def rail_fence_encrypt():
-    data = request.json
-    plain_text = data['plain_text']
-    num_rails = int(data['num_rails'])
-    encrypted_text = railfence_cipher.rail_fence_encrypt(plain_text, num_rails)
-    return jsonify({'encrypted_text': encrypted_text})
 
-@app.route('/api/railfence/decrypt', methods=['POST'])
-def rail_fence_decrypt():
-    data = request.json
-    cipher_text = data['cipher_text']
-    num_rails = int(data['num_rails'])
-    decrypted_text = railfence_cipher.rail_fence_decrypt(cipher_text, num_rails)
-    return jsonify({'decrypted_text': decrypted_text})
+# ================= RAIL FENCE =================
+@app.route('/railfence/encrypt', methods=['POST'])
+def railfence_encrypt():
+    plain_text = request.form['plain_text']
+    key = int(request.form['key'])
+    result = railfence_cipher.rail_fence_encrypt(plain_text, key)
+    return render_template('index.html', result=result, cipher_name='Rail Fence Encrypt')
 
-@app.route('/api/playfair/creatematrix', methods=['POST'])
-def playfair_creatematrix():
-    data = request.json
-    key = data['key']
-    playfair_matrix = playfair_cipher.create_playfair_matrix(key)
-    return jsonify({"playfair_matrix": playfair_matrix})
 
-@app.route('/api/playfair/encrypt', methods=['POST'])
+@app.route('/railfence/decrypt', methods=['POST'])
+def railfence_decrypt():
+    cipher_text = request.form['cipher_text']
+    key = int(request.form['key'])
+    result = railfence_cipher.rail_fence_decrypt(cipher_text, key)
+    return render_template('index.html', result=result, cipher_name='Rail Fence Decrypt')
+
+
+# ================= PLAYFAIR =================
+@app.route('/playfair/encrypt', methods=['POST'])
 def playfair_encrypt():
-    data = request.json
-    plain_text = data['plain_text']
-    key = data['key']
-    playfair_matrix = playfair_cipher.create_playfair_matrix(key)
-    encrypted_text = playfair_cipher.playfair_encrypt(plain_text, playfair_matrix)
-    return jsonify({'encrypted_text': encrypted_text})
+    plain_text = request.form['plain_text']
+    key = request.form['key']
+    result = playfair_cipher.playfair_encrypt(plain_text, key)
+    return render_template('index.html', result=result, cipher_name='Playfair Encrypt')
 
-@app.route('/api/playfair/decrypt', methods=['POST'])
+
+@app.route('/playfair/decrypt', methods=['POST'])
 def playfair_decrypt():
-    data = request.json
-    cipher_text = data['cipher_text']
-    key = data['key']
-    playfair_matrix = playfair_cipher.create_playfair_matrix(key)
-    decrypted_text = playfair_cipher.playfair_decrypt(cipher_text, playfair_matrix)
-    return jsonify({'decrypted_text': decrypted_text})
+    cipher_text = request.form['cipher_text']
+    key = request.form['key']
+    result = playfair_cipher.playfair_decrypt(cipher_text, key)
+    return render_template('index.html', result=result, cipher_name='Playfair Decrypt')
 
-@app.route('/api/transposition/encrypt', methods=['POST'])
+
+# ================= TRANSPOSITION =================
+@app.route('/transposition/encrypt', methods=['POST'])
 def transposition_encrypt():
-    data = request.get_json()
-    plain_text = data.get('plain_text')
-    key = int(data.get('key'))
-    encrypted_text = transposition_cipher.encrypt(plain_text, key)
-    return jsonify({'encrypted_text': encrypted_text})
+    plain_text = request.form['plain_text']
+    key = int(request.form['key'])
+    result = transposition_cipher.encrypt_message(key, plain_text)
+    return render_template('index.html', result=result, cipher_name='Transposition Encrypt')
 
-@app.route('/api/transposition/decrypt', methods=['POST'])
+
+@app.route('/transposition/decrypt', methods=['POST'])
 def transposition_decrypt():
-    data = request.get_json()
-    cipher_text = data.get('cipher_text')
-    key = int(data.get('key'))
-    decrypted_text = transposition_cipher.decrypt(cipher_text, key)
-    return jsonify({'decrypted_text': decrypted_text})
+    cipher_text = request.form['cipher_text']
+    key = int(request.form['key'])
+    result = transposition_cipher.decrypt_message(key, cipher_text)
+    return render_template('index.html', result=result, cipher_name='Transposition Decrypt')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
