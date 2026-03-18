@@ -22,7 +22,7 @@ class MyApp(QMainWindow):
 
             if response.status_code == 200:
                 data = response.json()
-                self.ui.txt_cipher_text.setPlainText(data.get("encrypted_text", ""))
+                self.ui.txt_cipher_text.setPlainText(data["result"])
                 QMessageBox.information(self, "OK", "Encrypted Successfully")
             else:
                 print("Error:", response.text)
@@ -41,7 +41,7 @@ class MyApp(QMainWindow):
 
             if response.status_code == 200:
                 data = response.json()
-                self.ui.txt_plain_text.setPlainText(data.get("decrypted_text", ""))
+                self.ui.txt_plain_text.setPlainText(data["result"])
                 QMessageBox.information(self, "OK", "Decrypted Successfully")
             else:
                 print("Error:", response.text)
