@@ -1,11 +1,15 @@
 from flask import Flask, render_template, request, jsonify
+import os
+
 from cipher.caesar import CaesarCipher
 from cipher.vigenere import VigenereCipher
 from cipher.playfair import PlayFairCipher
 from cipher.railfence import RailFenceCipher
 from cipher.transposition import TranspositionCipher
 
-app = Flask(__name__, template_folder="templates")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+app = Flask(__name__, template_folder=os.path.join(BASE_DIR, "templates"))
 app.secret_key = "123456"
 
 
